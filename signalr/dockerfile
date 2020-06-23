@@ -1,0 +1,10 @@
+FROM mcr.microsoft.com/dotnet/core/aspnet:3.1
+
+# copying the build files to the /app folder
+COPY bin/Release/netcoreapp3.1/publish/ App/
+
+# cding to app folder
+WORKDIR /App
+
+# tell whcih command to run to start service when we start container using "docker run..."
+ENTRYPOINT ["dotnet", "signalr.dll"]
