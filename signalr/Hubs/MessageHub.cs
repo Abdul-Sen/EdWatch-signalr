@@ -16,5 +16,45 @@ namespace signalr.Hubs
         {
             return Clients.AllExcept(Context.ConnectionId).SendAsync("ReciveNewMessage", payload);
         }
+
+        // <summary>
+        //  Adds the current user to the specified group
+        // </summary>
+        /// <param name="groupName">Used to add to that group.</param>
+        /// <param name="userName">Used alert others about the new user added.</param>
+        public Task AddCurrentUserToGroup(string groupName, string userName)
+        {
+            Groups.AddToGroupAsync(Context.ConnectionId, groupName);
+
+            string alertBuilder = userName + " has joined!";
+            return NewGroupAlert(groupName,alertBuilder);
+        }
+
+        // <summary>
+        // <para> Sends an alert to the group using a bot
+        // <summary
+        public Task NewGroupAlert(string groupName, string alert)
+        {
+            return Clients.OthersInGroup(groupName).SendAsync("GroupAlert", alert);
+        }
+
+        // <summary>
+        //  <para>Sends message to all in a specified group except self</para>
+        // </summary>
+        /// <param name="groupName">Used scope the group this payload is intended for.</param>
+        /// <param name="messagePayload">The message we want to send to other users</param>
+        public Task NewGroupMessage(string messagePayload, string groupName)
+        {
+            return Clients.OthersInGroup(groupName).SendAsync("ReciveNewMessage", messagePayload);
+        }
+
+        // <summary>
+        //  Removes current user from the specified group
+        // </summary>
+        public Task RemoveUserFromGroup(string groupName)
+        {
+            return Groups.RemoveFromGroupAsync(Context.ConnectionId, groupName);
+        }
+
     }
 }
