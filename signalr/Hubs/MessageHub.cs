@@ -26,6 +26,8 @@ namespace signalr.Hubs
         {
             Groups.AddToGroupAsync(Context.ConnectionId, groupName);
 
+            Clients.OthersInGroup(groupName).SendAsync("GetHostVideo");
+
             string alertBuilder = userName + " has joined!";
             return NewGroupAlert(groupName,alertBuilder);
         }
@@ -54,6 +56,11 @@ namespace signalr.Hubs
         public Task RemoveUserFromGroup(string groupName)
         {
             return Groups.RemoveFromGroupAsync(Context.ConnectionId, groupName);
+        }
+//---------------------------------------------------------VIDEO CALLS--------
+        public Task SetGroupVideo(string url, string groupName)
+        {
+           return Clients.OthersInGroup(groupName).SendAsync("LoadGroupVideo",url);
         }
 
     }
