@@ -18,6 +18,14 @@ namespace signalr.Hubs
         }
 
         // <summary>
+        //  Adds the host user to the specified group
+        // </summary>
+        public Task CreateGroup(string groupName)
+        {
+            return Groups.AddToGroupAsync(Context.ConnectionId,groupName);
+        }
+
+        // <summary>
         //  Adds the current user to the specified group
         // </summary>
         /// <param name="groupName">Used to add to that group.</param>
@@ -37,7 +45,7 @@ namespace signalr.Hubs
         // <summary
         public Task NewGroupAlert(string groupName, string alert)
         {
-            return Clients.OthersInGroup(groupName).SendAsync("GroupAlert", alert);
+           return Clients.Group(groupName).SendAsync("GroupAlert", alert);
         }
 
         // <summary>
@@ -63,5 +71,10 @@ namespace signalr.Hubs
            return Clients.OthersInGroup(groupName).SendAsync("LoadGroupVideo",url);
         }
 
+        public Task UpdateGroupVideoState(string videoState, string groupName)
+        {
+            Console.WriteLine(videoState);
+            return Clients.OthersInGroup(groupName).SendAsync("NewVideoState", videoState);
+        }
     }
 }
