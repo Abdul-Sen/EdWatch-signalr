@@ -6,5 +6,9 @@ COPY bin/Release/netcoreapp3.1/publish/ App/
 # cding to app folder
 WORKDIR /App
 
+EXPOSE 5000/tcp
+ENV ASPNETCORE_URLS http://*:5000
+ENV ASPNETCORE_ENVIRONMENT docker
+
 # tell whcih command to run to start service when we start container using "docker run..."
 ENTRYPOINT ["dotnet", "signalr.dll"]
