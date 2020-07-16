@@ -22,7 +22,7 @@ namespace signalr.Hubs
         // </summary>
         public Task CreateGroup(string groupName)
         {
-            return Groups.AddToGroupAsync(Context.ConnectionId,groupName);
+            return Groups.AddToGroupAsync(Context.ConnectionId, groupName);
         }
 
         // <summary>
@@ -37,7 +37,7 @@ namespace signalr.Hubs
             Clients.OthersInGroup(groupName).SendAsync("GetHostVideo");
 
             string alertBuilder = userName + " has joined!";
-            return NewGroupAlert(groupName,alertBuilder);
+            return NewGroupAlert(groupName, alertBuilder);
         }
 
         // <summary>
@@ -45,7 +45,7 @@ namespace signalr.Hubs
         // <summary
         public Task NewGroupAlert(string groupName, string alert)
         {
-           return Clients.Group(groupName).SendAsync("GroupAlert", alert);
+            return Clients.Group(groupName).SendAsync("GroupAlert", alert);
         }
 
         // <summary>
@@ -65,16 +65,31 @@ namespace signalr.Hubs
         {
             return Groups.RemoveFromGroupAsync(Context.ConnectionId, groupName);
         }
-//---------------------------------------------------------VIDEO CALLS--------
+        //---------------------------------------------------------VIDEO CALLS--------
+        // <summary>
+        //  Sets new video for users who do not have it set currently
+        // </summary>
         public Task SetGroupVideo(string url, string groupName)
         {
-           return Clients.OthersInGroup(groupName).SendAsync("LoadGroupVideo",url);
+            return Clients.OthersInGroup(groupName).SendAsync("LoadGroupVideo", url);
         }
 
+        // <summary>
+        //  Is called by host to update video state for all users
+        // </summary>
         public Task UpdateGroupVideoState(string videoState, string groupName)
         {
             Console.WriteLine(videoState);
             return Clients.OthersInGroup(groupName).SendAsync("NewVideoState", videoState);
         }
+        // <summary>
+        //  Called by host client to give new video state to all users
+        // </summary>
+        public Task GetHostStateNew(string groupName)
+        {
+            Console.WriteLine("2 - GetHostStateNew called. It will ask the host to give new state");
+            return Clients.OthersInGroup(groupName).SendAsync("GiveMeHostState");
+        }
     }
+
 }
