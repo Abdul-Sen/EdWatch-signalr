@@ -30,7 +30,7 @@ namespace signalr
                 app.UseDeveloperExceptionPage();
             }
             app.UseCors(options =>{
-                options.WithOrigins("https://abdul-sen.github.io","http://localhost:3000").AllowAnyMethod().AllowAnyHeader().AllowCredentials();
+                options.WithOrigins("https://edwatch.me","https://abdul-sen.github.io").AllowAnyMethod().AllowAnyHeader().AllowCredentials();
             });
 
             app.UseRouting();
